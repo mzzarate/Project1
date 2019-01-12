@@ -1,0 +1,22 @@
+{
+  "name": "project1",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "jshint assets/javascript/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mzzarate/Project1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mzzarate/Project1/issues"
+  },
+  "homepage": "https://github.com/mzzarate/Project1#readme",
+  "description": "",
+  "dependencies": {
+    "jshint": "^2.9.7"
+  }
+}
