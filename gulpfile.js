@@ -1,3 +1,8 @@
+//This is the updated file for anyone using a sass project
+// you will also need to run the following command
+
+//npm install gulp-wait --save
+
 // This configuration is OPTIONAL
 
 // in order to use this file
@@ -13,19 +18,45 @@
 // Sass configuration
 var gulp = require('gulp');
 var sass = require('gulp-sass');
+var wait = require('gulp-wait');
 
-gulp.task('sass', gulp.series(function(done) {
-    gulp.src('assets/scss/main.scss')
-        .pipe(sass())
-        .pipe(gulp.dest('assets/css'))
-        .on('error', function(e){
-            console.log(e);
-        });
-    done();
-}));
-
-gulp.task('default', gulp.series(['sass'], function(done) {
-    gulp.watch('assets/scss/*.scss').on('change', function(event){
-        gulp.series(['sass']);
+var sassyFunction = function() { 
+    return new Promise(function(resolve, reject) {
+        console.log("got here");
+        gulp.src('assets/scss/main.scss')
+            .pipe(wait(500))
+            .pipe(sass())
+            .pipe(gulp.dest('assets/css'))
+            .on('error', function(e){
+                console.log(e);
+                console.log("Caught error");
+            })
+            .on('end', function(){
+                resolve();
+            });
     });
+};
+
+gulp.task('sass', sassyFunction);
+
+gulp.task('default', gulp.series(sassyFunction, function(done) {
+    gulp.watch(['assets/scss/*.scss'])
+        .on('change', gulp.series(function(event, path){
+            console.log("change");
+            sassyFunction().then(function(){
+                console.log("done");
+            });
+        }))
+        .on('unlink', gulp.series(function(event, path){
+            console.log("unlink");
+            sassyFunction().then(function(){
+                console.log("done");
+            });
+        }))
+        .on('add', gulp.series(function(event, path){
+            console.log("add");
+            sassyFunction().then(function(){
+                console.log("done");
+            });
+        }));
 }));
